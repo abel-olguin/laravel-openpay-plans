@@ -5,7 +5,7 @@ Laravel [Openpay](https://www.openpay.mx/) plans es una librería de laravel par
 ## Instalación
 
 ```bash
-composer require laravel-openpay-plans
+composer require abel-olguin/laravel-openpay-plans
 
 php artisan vendor:publish --provider="AbelOlguin\PagoFacilPlans\PlansProvider"
 
