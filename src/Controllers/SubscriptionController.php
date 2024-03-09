@@ -4,11 +4,12 @@ namespace AbelOlguin\OpenPayPlans\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Access\Gate;
+
 use AbelOlguin\OpenPayPlans\Helpers\OpenPayHelper;
 use AbelOlguin\OpenPayPlans\Models\Plan;
-use AbelOlguin\OpenPayPlans\Models\Subscription;
 use AbelOlguin\OpenPayPlans\Models\UserPlan;
-use \AbelOlguin\OpenPayPlans\Controllers\Traits\Subscriptions;
+use AbelOlguin\OpenPayPlans\Controllers\Traits\Subscriptions;
 
 class SubscriptionController
 {
@@ -64,13 +65,17 @@ class SubscriptionController
      */
     public function store(Request $request)
     {
+        if (!Gate::allows('create-plan')) {
+            abort(403);
+        }
+
         DB::beginTransaction();
         try {
             $validated          = $this->validateSubscription($request);
             $plan               = Plan::find($validated['plan_id']);
             $openSubscription   = $this->openHelper->subscribePlan($plan, $validated);
             $subscription       = $this->saveSubscription($openSubscription, $validated);
-            $userPlan           = $this->saveUserPlan($openSubscription, $subscription, $validated);
+            $userPlan           = $this->saveUserPlan($openSubscription, $subscription, $plan->id);
 
             DB::commit();
 

@@ -65,13 +65,14 @@ trait Subscriptions
      * @param array $validated
      * @return UserPlan
      */
-    public function saveUserPlan(OpenpaySubscription $openSubscription, Subscription $subscription, array $validated): UserPlan
+    public function saveUserPlan(OpenpaySubscription $openSubscription, Subscription $subscription, int $planId): UserPlan
     {
         return UserPlan::create([
             'user_id'           => auth()->id(),
-            'plan_id'           => $plan->id,
+            'plan_id'           => $planId,
             'subscription_id'   => $subscription->id,
             'active'            => in_array($openSubscription->status, OpenPayHelper::$activeStatuses)
         ]);
     }
+
 }

@@ -59,6 +59,14 @@ class PlansProvider extends ServiceProvider
         Gate::define('has-plan', function (User $user, string|array $plan) {
             return $user->hasAnyPlan(is_array($plan) ? $plan : [$plan]);
         });
+
+        Gate::define('create-plan', function (User $user) {
+            if(config('plans.allow_multiple_plans')){
+                return true;
+            }
+            $plan = $user->plans()->count();
+            return !!$plan;
+        });
     }
 
     protected function registerConfig(): void
