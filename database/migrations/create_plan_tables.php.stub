@@ -1,0 +1,76 @@
+<?php
+
+use AbelOlguin\OpenPayPlans\Models\Plan;
+use AbelOlguin\OpenPayPlans\Models\Subscription;
+use App\Models\User;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('users', function($table) {
+            $table->string('customer_id')->nullable();
+        });
+
+        Schema::create('plans', function (Blueprint $table) {
+            $table->id();
+            $table->string('plan_id')->nullable();
+            $table->string('plan_type');
+            $table->integer('plan_type_quantity');
+            $table->float('price');
+            $table->string('name');
+            $table->integer('weight')->unique();
+            $table->integer('trial_days')->default(0);
+
+            //$table->string('slug');
+            //$table->string('description');
+            //$table->string('image');
+            $table->timestamps();
+        });
+
+        Schema::create('subscriptions', function (Blueprint $table) {
+            $table->id();
+            $table->string('subscription_id');
+            $table->string('card_type');
+            $table->string('brand');
+            $table->string('card_number');
+            $table->string('holder_name');
+            $table->string('bank_name');
+            $table->integer('current_period_number');
+            $table->date('period_end_date');
+            $table->date('trial_end_date');
+            $table->string('status');
+
+            $table->timestamps();
+        });
+
+        Schema::create('user_plans', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(Plan::class)->constrained();
+            $table->foreignIdFor(Subscription::class)->constrained();
+            $table->boolean('active');
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('users', function($table) {
+            $table->dropColumn('customer_id');
+        });
+        Schema::dropIfExists('user_plans');
+        Schema::dropIfExists('plans');
+        Schema::dropIfExists('subscriptions');
+
+    }
+};
