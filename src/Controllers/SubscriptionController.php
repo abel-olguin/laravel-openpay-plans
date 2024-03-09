@@ -8,7 +8,7 @@ use AbelOlguin\OpenPayPlans\Helpers\OpenPayHelper;
 use AbelOlguin\OpenPayPlans\Models\Plan;
 use AbelOlguin\OpenPayPlans\Models\Subscription;
 use AbelOlguin\OpenPayPlans\Models\UserPlan;
-use \AbelOlguin\OpenPayPlans\Controllers\Subscriptions;
+use \AbelOlguin\OpenPayPlans\Controllers\Traits\Subscriptions;
 
 class SubscriptionController
 {

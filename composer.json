@@ -3,7 +3,7 @@
     "description": "Librería para manejar planes con Laravel y la plataforma de pago Openpay.",
     "tags": ["subscriptions", "suscripciones", "pagofacil", "openpay"],
     "type": "library",
-    "license": "LGPL",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "AbelOlguin\\OpenPayPlans\\": "src/"
@@ -28,6 +28,10 @@
         "openpay/sdk": "^3.0",
         "illuminate/support": "^10.0"
     },
+    "require-dev": {
+      "orchestra/testbench": "^8.18",
+      "phpunit/phpunit": "^10.5"
+    },
     "prefer-stable": true,
     "config": {
         "sort-packages": true,
@@ -37,8 +41,5 @@
             "pestphp/pest-plugin": true
         }
     },
-    "require-dev": {
-        "orchestra/testbench": "^8.18",
-        "phpunit/phpunit": "^10.5"
-    }
+
 }
