@@ -81,7 +81,7 @@ class SubscriptionController
 
             return redirect()->to(config('plans.subscription_success_url'))
                              ->with('success', __("Subscribed successfully."));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()
                              ->with('error', __('An error has occurred, try again later: ') . $e->getMessage());

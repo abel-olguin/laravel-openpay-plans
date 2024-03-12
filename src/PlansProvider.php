@@ -3,6 +3,7 @@
 namespace AbelOlguin\OpenPayPlans;
 
 use AbelOlguin\OpenPayPlans\Commands\DeletePlans;
+use AbelOlguin\OpenPayPlans\Models\Plan;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
@@ -60,12 +61,12 @@ class PlansProvider extends ServiceProvider
             return $user->hasAnyPlan(is_array($plan) ? $plan : [$plan]);
         });
 
-        Gate::define('create-plan', function (User $user) {
-            if(config('plans.allow_multiple_plans')){
+        Gate::define('create-plan', function (User $user, Plan $plan) {
+            if(config('plans.allow_multiple_plans') && !$user->hasAnyPlan([$plan->name])){
                 return true;
             }
-            $plan = $user->plans()->count();
-            return !!$plan;
+            $plan = $user->hasActivePlan();
+            return !$plan;
         });
     }
 

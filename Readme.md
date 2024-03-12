@@ -7,7 +7,7 @@ Laravel [Openpay](https://www.openpay.mx/) plans es una librería de laravel par
 ```bash
 composer require abel-olguin/laravel-openpay-plans
 
-php artisan vendor:publish --provider="AbelOlguin\PagoFacilPlans\PlansProvider"
+php artisan vendor:publish --provider="AbelOlguin\OpenPayPlans\PlansProvider"
 
 php artisan migrate
 ```
@@ -26,13 +26,13 @@ PLANS_OPEN_PRODUCTION=true #(Si es true se generaran cargos reales)
 Para usar las rutas por defecto puedes usar:
 
 ```php
-AbelOlguin\OpenPayPlans\Routes\Plans::routes();
+\AbelOlguin\OpenPayPlans\Routes\Plans::routes();
 ```
 
 Si prefieres hacer tus propias rutas te recomiendo usar el trait `\AbelOlguin\OpenPayPlans\Controllers\Traits\Subscriptions` 
 
 ```php
-use \AbelOlguin\OpenPayPlans\Controllers\Traits\Subscriptions;
+use AbelOlguin\OpenPayPlans\Controllers\Traits\Subscriptions;
 
 class SubscriptionController
 {
@@ -57,23 +57,34 @@ El middleware dejará pasar a cualquier usuario que tenga un plan activo, sea cu
 
 ## Gates
 
-Hay dos gates disponibles los cuales se pueden usar de la siguiente forma
-
+Hay tres gates disponibles los cuales se pueden usar de la siguiente forma
+1.
 ```php
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate;
 if (!Gate::forUser($user)->allows('has-plan', 'trial')) {
   abort(403);
 }
 ```
 El gate responderá con un error 403 en caso de que el usuario no tenga el plan **trial**
-
+2.
 ```php
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate;
 if (!Gate::forUser($user)->allows('has-active-plan')) {
   abort(403);
 }
 ```
 El gate responderá con un error 403 en caso de que el usuario no tenga un plan activo
+3.
+```php
+use Illuminate\Support\Facades\Gate;
+if (!Gate::forUser($user)->allows('create-plan')) {
+  abort(403);
+}
+```
+El gate responderá con un error 403 en caso de que el usuario no pueda crear un plan, esto se determina usando la configuracion, 
+si la llave `allow_multiple_plans` es `true`, permitira que el usuario pueda seguir suscribiendose a planes si por el contrario es
+`false` significa que el usuario solo puede suscribirse a un plan y si intenta suscribirse a otros no podra hacerlo,
+de igual forma este gate valida que el usuario no se suscriba al mismo plan.
 
 ## Comandos
 

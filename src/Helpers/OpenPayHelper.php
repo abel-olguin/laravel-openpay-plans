@@ -4,6 +4,7 @@ namespace AbelOlguin\OpenPayPlans\Helpers;
 
 use AbelOlguin\OpenPayPlans\Models\Plan;
 use AbelOlguin\OpenPayPlans\Models\UserPlan;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Openpay\Data\Openpay;
@@ -69,7 +70,6 @@ class OpenPayHelper
         if ($data['trial']) {
             $data['trial_end_date'] = Carbon::now()->addDays($plan->trial_days);
         }
-
         $customer = $this->helper->customers->get($this->getCurrentCustomerId());
 
         return $customer->subscriptions->add($data);
