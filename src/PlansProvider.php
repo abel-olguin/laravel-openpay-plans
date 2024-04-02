@@ -61,8 +61,8 @@ class PlansProvider extends ServiceProvider
             return $user->hasAnyPlan(is_array($plan) ? $plan : [$plan]);
         });
 
-        Gate::define('create-plan', function (User $user, Plan $plan) {
-            if(config('plans.allow_multiple_plans') && !$user->hasAnyPlan([$plan->name])){
+        Gate::define('create-plan', function (User $user, Plan $plan = null) {
+            if(config('plans.allow_multiple_plans') && $plan && !$user->hasAnyPlan([$plan->name])){
                 return true;
             }
             $plan = $user->hasActivePlan();
