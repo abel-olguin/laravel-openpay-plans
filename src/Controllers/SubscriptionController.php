@@ -53,7 +53,7 @@ class SubscriptionController
     {
         $this->openHelper->cancelSubscription($userPlan);
 
-        return redirect()->route(config('plans.subscription_success_url'))
+        return redirect()->route(config('plans.plans_url'))
                          ->with('success', __('Subscription cancelled successfully.'));
     }
 
@@ -79,7 +79,7 @@ class SubscriptionController
 
             DB::commit();
 
-            return redirect()->to(config('plans.subscription_success_url'))
+            return redirect()->to(config('plans.plans_url'))
                              ->with('success', __("Subscribed successfully."));
         } catch (\Exception $e) {
             DB::rollBack();
