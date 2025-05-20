@@ -1,4 +1,4 @@
-#Laravel [Openpay](https://www.openpay.mx/) plans
+# Laravel [Openpay](https://www.openpay.mx/) plans
 
 Laravel [Openpay](https://www.openpay.mx/) plans es una librería de laravel para gestionar las suscripciones de openpay.
 
